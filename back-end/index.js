@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 require('dotenv').config();
 
@@ -14,10 +14,11 @@ app.use(cors());
 
 const client = new MongoClient(URI);
 
-app.get('/', async (req, res) => {
+app.post('/register', async (req, res) => {
   try {
+    const { displayName, email, password } = req.body;
     const con = await client.connect();
-    const data = await con.db(dbName).collection('Forum').find().toArray();
+    const data = await con.db(dbName).collection('Registered').insertOne({ displayName, email, password });
     await con.close();
     res.send(data);
   } catch (error) {
@@ -25,11 +26,10 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.post('/', async (req, res) => {
+app.get('/register', async (req, res) => {
   try {
-    const {} = req.body;
     const con = await client.connect();
-    const data = await con.db(dbName).collection('Forum').insertOne({});
+    const data = await con.db(dbName).collection('Registered').find().toArray();
     await con.close();
     res.send(data);
   } catch (error) {
