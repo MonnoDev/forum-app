@@ -1,12 +1,20 @@
 import ClientLayout from "../layouts/ClientLayout/ClientLayout";
 import SigninLayount from "../layouts/SigninLayout/LoginLayount";
+import EditQuestion from "../pages/EditQuestion/EditQuestion";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
+import PostQuestion from "../pages/PostQuestion/PostQuestion";
 import Register from "../pages/Register/Register";
+import Question from "../pages/Question/Question";
 
 export const LOGIN_ROUTE = "/login";
 export const REGISTER_ROUTE = "/register";
-export const HOME_ROUTE = "/home"
+export const HOME_ROUTE = "/home";
+export const POST_QUESTION_ROUTE = `${HOME_ROUTE}/post`;
+export const QUESTION_ROUTE = `${HOME_ROUTE}/question`;
+export const EDIT_QUESTION_ROUTE = `${QUESTION_ROUTE}/edit`;
+
+
 
 export const signinRoutes = {
     Layout: SigninLayount,
@@ -27,6 +35,18 @@ export const clientRoutes = {
     routes: [ {
         path: HOME_ROUTE,
         Component: Home,
+    },
+    {
+        path: POST_QUESTION_ROUTE,
+        Component: PostQuestion,
+    },
+    {
+        path: EDIT_QUESTION_ROUTE,
+        Component: EditQuestion,
+    },
+    {
+        path: QUESTION_ROUTE,
+        Component: Question,
     },
     ],
     

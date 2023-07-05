@@ -9,6 +9,7 @@ const UserContext = createContext({
   loggedIn: false,
   onRegister: () => null,
   onLogin: () => null,
+  onPostQuestion: () => null,
 });
 
 const UserProvider = ({ children }) => {
@@ -26,7 +27,7 @@ const UserProvider = ({ children }) => {
       });
   };
 
-  const onLogin = (user, setError) => { // Include setError as a parameter
+  const onLogin = (user, setError) => {
     getUser()
     .then((response) => {
       const exisitingUser = checkUser(response, user);
