@@ -7,13 +7,12 @@ import PostQuestion from "../pages/PostQuestion/PostQuestion";
 import Register from "../pages/Register/Register";
 import Question from "../pages/Question/Question";
 
-export const LOGIN_ROUTE = "/login";
+export const LOGIN_ROUTE = "/";
 export const REGISTER_ROUTE = "/register";
-export const HOME_ROUTE = "/home";
-export const POST_QUESTION_ROUTE = `${HOME_ROUTE}/post`;
-export const QUESTION_ROUTE = `${HOME_ROUTE}/question`;
+export const HOME_ROUTE = "/";
+export const POST_QUESTION_ROUTE = `/post`;
+export const QUESTION_ROUTE = "/question/:id";
 export const EDIT_QUESTION_ROUTE = `${QUESTION_ROUTE}/edit`;
-
 
 
 export const signinRoutes = {

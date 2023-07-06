@@ -3,41 +3,44 @@ import { useNavigate, generatePath } from "react-router-dom";
 import FormField from "../../components/FormField/FormField";
 import Button from "../../components/Button/Button";
 import TextArea from "../../components/TextArea/TextArea";
-import {createQuestion, updateQuestiom} from "../../api/questions"
-import { HOME_ROUTE} from "../../routes/const";
+import { createQuestion, updateQuestion } from "../../api/questions";
+import { QUESTION_ROUTE, HOME_ROUTE } from "../../routes/const";
 
+const PostQuestion = ({ question }) => {
+  const [title, setTitle] = useState(question?.title || "");
+  const [questionText, setQuestionText] = useState(question?.question || "");
+  const isEditing = !!question;
 
-const PostQuestion = ({questiona}) => {
-    const [title, setTitle] = useState(questiona?.title || "");
-    const [question, setQuestion] = useState(questiona?.question || "");
-    const isEditing = !!questiona;
-  
-    const navigate = useNavigate();
-  
-    const onSubmitHandler = (e) => {
-      e.preventDefault();
-      const submittingQuestion = {
-        title,
-        question
-      };
-  
-      const saveQuestion = isEditing ? updateQuestiom : createQuestion;
-      const savingQuestion = isEditing
-        ? { id: questiona.id, ...submittingQuestion }
-        : submittingQuestion;
-  
-      saveQuestion(savingQuestion)
+  const navigate = useNavigate();
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    const submittingQuestion = {
+      title,
+      question: questionText,
+    };
+
+    if (isEditing) {
+      const updatedQuestion = { id: question.id, ...submittingQuestion };
+      updateQuestion(updatedQuestion)
         .then(() => {
-          const route = isEditing
-            ? generatePath(HOME_ROUTE, { id: question.id })
-            : HOME_ROUTE;
+          const route = generatePath(QUESTION_ROUTE, { id: question.id });
           navigate(route);
         })
         .catch((error) => {
           console.log(error);
         });
-    };
-  
+    } else {
+      createQuestion(submittingQuestion)
+        .then(() => {
+          navigate(HOME_ROUTE);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
 
   return (
     <form onSubmit={onSubmitHandler}>
@@ -51,11 +54,11 @@ const PostQuestion = ({questiona}) => {
       <TextArea
         label="What is your question?"
         type="textarea"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
+        value={questionText}
+        onChange={(e) => setQuestionText(e.target.value)}
         required
       />
-      <Button>Post Question</Button>
+      <Button>{isEditing ? "Edit" : "Create"} Question</Button>
     </form>
   );
 };

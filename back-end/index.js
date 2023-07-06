@@ -38,7 +38,7 @@ app.get('/register', async (req, res) => {
   }
 });
 
-app.post('/questions', async (req, res) => {
+app.post('/question', async (req, res) => {
   try {
     const { title, question } = req.body;
     const con = await client.connect();
@@ -70,7 +70,7 @@ app.get('/questions', async (req, res) => {
   }
 });
 
-app.put('/questions/:id', async (req, res) => {
+app.put('/question/:id', async (req, res) => {
   try {
     const questionId = req.params.id;
     const { title, question } = req.body;
@@ -88,6 +88,31 @@ app.put('/questions/:id', async (req, res) => {
     return res.json({ message: 'Question updated successfully' });
   } catch (error) {
     return res.status(500).send(error);
+  }
+});
+
+app.get('/question/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Questions');
+    const data = await collection.findOne({ _id: new ObjectId(id) });
+    await con.close();
+
+    if (!data) {
+      return res.status(404).send('Question not found');
+    }
+
+    // Transform the _id field to a string without the $oid property
+    const transformedData = {
+      id: data._id.toString(),
+      ...data,
+    };
+
+    return res.send(transformedData); // Use return to return the response
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(error.message); // Use return to return the error response
   }
 });
 

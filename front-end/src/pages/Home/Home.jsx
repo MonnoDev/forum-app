@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getQuestions } from "../../api/questions";
 import QuestionCard from "./QuestionCard";
 import Button from "../../components/Button/Button";
-import { POST_QUESTION_ROUTE, QUESTION_ROUTE } from "../../routes/const";
+import { POST_QUESTION_ROUTE, QUESTION_ROUTE} from "../../routes/const";
 import "./Home.css"
 
 const Home = () => {
@@ -40,11 +40,11 @@ const Home = () => {
         </Link>
       </div>
       <div>
-        {questions.map((question) => (
-          <Link key={question._id} to={generatePath(QUESTION_ROUTE, { id: question._id })}>
-            <QuestionCard title={question.title} question={question.question}/>
-          </Link>
-        ))}
+      {questions.map((question) => (
+  <Link key={question.id} to={generatePath(QUESTION_ROUTE, { id: question.id })}>
+    <QuestionCard key={question.id} title={question.title} question={question.question} />
+  </Link>
+))}
       </div>
     </div>
   );
