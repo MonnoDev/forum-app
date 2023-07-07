@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import { getQuestion } from "../../api/questions";
-import { POST_QUESTION_ROUTE } from "../../routes/const";
+import { getComment } from "../../api/comments";
 import QuestionCard from "../Home/QuestionCard";
-import Button from "../../components/Button/Button";
 import QuestionActions from "./QuestionActions";
+import PostQuestion from "./PostQuestion";
+import CommentsCard from "./CommentsCard";
 
 const Question = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,6 +26,14 @@ const Question = () => {
       .finally(() => {
         setIsLoading(false);
       });
+
+    getComment(id)
+      .then((response) => {
+        setComments(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [id]);
 
   if (isLoading) {
@@ -36,8 +46,16 @@ const Question = () => {
 
   return (
     <div>
-        <QuestionActions id={question.id} />
-        <QuestionCard title={question.title} question={question.question} />
+      <QuestionActions id={question.id} />
+      <QuestionCard title={question.title} question={question.question} />
+      <div>
+        <PostQuestion questionId={question.id} />
+      </div>
+      <div>
+        {comments.map((comment) => (
+          <CommentsCard key={comment._id} comment={comment.comment} />
+        ))}
+      </div>
     </div>
   );
 };

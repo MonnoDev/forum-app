@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 const client = new MongoClient(URI);
-
+//works
 app.post('/register', async (req, res) => {
   try {
     const { displayName, email, password } = req.body;
@@ -25,7 +25,7 @@ app.post('/register', async (req, res) => {
     res.status(500).send(error);
   }
 });
-
+//works
 app.get('/register', async (req, res) => {
   try {
     const con = await client.connect();
@@ -37,7 +37,7 @@ app.get('/register', async (req, res) => {
     res.status(500).send(error);
   }
 });
-
+//works
 app.post('/question', async (req, res) => {
   try {
     const { title, question } = req.body;
@@ -50,7 +50,7 @@ app.post('/question', async (req, res) => {
     res.status(500).send(error);
   }
 });
-
+//works
 app.get('/questions', async (req, res) => {
   try {
     const con = await client.connect();
@@ -66,7 +66,7 @@ app.get('/questions', async (req, res) => {
     res.status(500).send(error);
   }
 });
-
+//works
 app.put('/question/:id', async (req, res) => {
   try {
     const questionId = req.params.id;
@@ -87,7 +87,7 @@ app.put('/question/:id', async (req, res) => {
     return res.status(500).send(error);
   }
 });
-
+//works
 app.get('/question/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -108,7 +108,7 @@ app.get('/question/:id', async (req, res) => {
     return res.status(500).send(error.message);
   }
 });
-
+//works
 app.delete('/question/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -122,6 +122,110 @@ app.delete('/question/:id', async (req, res) => {
     return res.json({ message: 'Question deleted successfully' });
   } catch (error) {
     return res.status(500).send(error);
+  }
+});
+//works
+app.post('/question/:id/comments', async (req, res) => {
+  try {
+    const { id } = req.params; // Get the question ID from the URL parameter
+    const { comment } = req.body;
+
+    const questionObjectId = new ObjectId(id); // Use the question ID to create ObjectId
+
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Comments');
+
+    const data = await collection.insertOne({
+      questionId: questionObjectId,
+      comment,
+    });
+    await con.close();
+
+    // Send only the inserted document's ID as a response
+    res.send({ id: data.insertedId });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+app.get('/question/:id/comments', async (req, res) => {
+  try {
+    const { id } = req.params; // Get the question ID from the URL parameter
+
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Comments');
+
+    const comments = await collection.aggregate([
+      {
+        $match: {
+          questionId: new ObjectId(id), // Convert questionId to ObjectId
+        },
+      },
+      {
+        $lookup: {
+          from: 'Questions',
+          localField: 'questionId',
+          foreignField: '_id',
+          as: 'question',
+        },
+      },
+    ]).toArray();
+
+    await con.close();
+
+    res.send(comments);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Update a comment /works
+app.put('/comments/:commentId', async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { comment } = req.body;
+
+    const commentObjectId = new ObjectId(commentId);
+
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Comments');
+
+    const result = await collection.updateOne(
+      { _id: commentObjectId },
+      { $set: { comment } }
+    );
+    await con.close();
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment updated successfully' });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Delete a comment /works
+app.delete('/comments/:commentId', async (req, res) => {
+  try {
+    const { commentId } = req.params;
+
+    const commentObjectId = new ObjectId(commentId);
+
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Comments');
+
+    const result = await collection.deleteOne({ _id: commentObjectId });
+    await con.close();
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 
