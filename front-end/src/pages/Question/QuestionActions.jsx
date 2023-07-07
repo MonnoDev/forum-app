@@ -1,6 +1,7 @@
 import { useNavigate, generatePath } from "react-router-dom";
 import Button from "../../components/Button/Button";
-import { EDIT_QUESTION_ROUTE } from "../../routes/const";
+import { EDIT_QUESTION_ROUTE, HOME_ROUTE } from "../../routes/const";
+import { deleteQuestion } from "../../api/questions"
 
 const QuestionActions = ({ id }) => {
   const navigate = useNavigate();
@@ -9,9 +10,21 @@ const QuestionActions = ({ id }) => {
     const path = generatePath(EDIT_QUESTION_ROUTE, { id });
     navigate(path);
   };
+
+  const onDelete = () => {
+    deleteQuestion(id)
+    .then(() => {
+      navigate(HOME_ROUTE)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+
   return (
     <div>
       <Button onClick={onEdit}>Edit Question</Button>
+      <Button onClick={onDelete}>Delete Projects</Button>
     </div>
   );
 };

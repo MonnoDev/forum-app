@@ -57,13 +57,10 @@ app.get('/questions', async (req, res) => {
     const collection = con.db(dbName).collection('Questions');
     const data = await collection.find().toArray();
     await con.close();
-
-    // Transform the _id field to a string without the $oid property
     const transformedData = data.map(({ _id, ...rest }) => ({
       id: _id.toString(),
       ...rest,
     }));
-
     res.send(transformedData);
   } catch (error) {
     res.status(500).send(error);
@@ -98,21 +95,33 @@ app.get('/question/:id', async (req, res) => {
     const collection = con.db(dbName).collection('Questions');
     const data = await collection.findOne({ _id: new ObjectId(id) });
     await con.close();
-
     if (!data) {
       return res.status(404).send('Question not found');
     }
-
-    // Transform the _id field to a string without the $oid property
     const transformedData = {
       id: data._id.toString(),
       ...data,
     };
-
-    return res.send(transformedData); // Use return to return the response
+    return res.send(transformedData);
   } catch (error) {
     console.error(error);
-    return res.status(500).send(error.message); // Use return to return the error response
+    return res.status(500).send(error.message);
+  }
+});
+
+app.delete('/question/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Questions');
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    await con.close();
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Question not found' });
+    }
+    return res.json({ message: 'Question deleted successfully' });
+  } catch (error) {
+    return res.status(500).send(error);
   }
 });
 

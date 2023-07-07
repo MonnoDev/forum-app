@@ -36,13 +36,8 @@ const Question = () => {
 
   return (
     <div>
-      <div>
-        <Link to={POST_QUESTION_ROUTE}>
-          <Button>Post a question</Button>
-        </Link>
         <QuestionActions id={question.id} />
-      </div>
-      <QuestionCard title={question.title} question={question.question} />
+        <QuestionCard title={question.title} question={question.question} />
     </div>
   );
 };

@@ -25,3 +25,8 @@ export const getQuestion = async (id) => {
   const response = await axios.get(`${API_BASE_URL}/question/${id}`);
   return response.data
 }
+
+export const deleteQuestion = async (id) => {
+  const response = await axios.delete(`${API_BASE_URL}/question/${id}`);
+  return response.data
+}
