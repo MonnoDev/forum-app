@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import { getQuestion } from "../../api/questions";
-import { getComment } from "../../api/comments";
+import { getComments } from "../../api/comments";
 import QuestionCard from "../Home/QuestionCard";
 import QuestionActions from "./QuestionActions";
-import PostQuestion from "./PostQuestion";
-import CommentsCard from "./CommentsCard";
+import AnswerCard from "../PostAnswer/AnswerCard";
+import PostAnswer from "../PostAnswer/PostAnswer";
 
 const Question = () => {
   const { id } = useParams();
@@ -27,9 +27,10 @@ const Question = () => {
         setIsLoading(false);
       });
 
-    getComment(id)
+    getComments(id)
       .then((response) => {
         setComments(response);
+        console.log("Comments:", response); // Log the comments data
       })
       .catch((error) => {
         console.log(error);
@@ -47,13 +48,13 @@ const Question = () => {
   return (
     <div>
       <QuestionActions id={question.id} />
-      <QuestionCard title={question.title} question={question.question} />
+      <QuestionCard question={question} /> {/* Pass the entire question object */}
       <div>
-        <PostQuestion questionId={question.id} />
+        <PostAnswer questionId={question.id} />
       </div>
       <div>
         {comments.map((comment) => (
-          <CommentsCard key={comment._id} comment={comment.comment} />
+          <AnswerCard key={comment._id} comment={comment} />
         ))}
       </div>
     </div>

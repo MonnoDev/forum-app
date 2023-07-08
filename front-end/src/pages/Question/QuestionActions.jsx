@@ -24,7 +24,7 @@ const QuestionActions = ({ id }) => {
   return (
     <div>
       <Button onClick={onEdit}>Edit Question</Button>
-      <Button onClick={onDelete}>Delete Projects</Button>
+      <Button onClick={onDelete}>Delete Question</Button>
     </div>
   );
 };

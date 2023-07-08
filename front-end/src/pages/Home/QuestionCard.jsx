@@ -1,10 +1,12 @@
 import "./Home.css"
 
-const QuestionCard = ({title, question}) => {
+const QuestionCard = ({ question }) => {
+  const { title, question: questionText, lastEdited } = question;
   return (
     <div className="container-question">
         <h2>Title:{title}</h2>
-        <div>Question:{question}</div>
+        <div>Question:{questionText}</div>
+        {lastEdited && <span className="edited">Edited</span>}
     </div>
   )
 }

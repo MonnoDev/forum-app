@@ -40,14 +40,15 @@ const Home = () => {
         </Link>
       </div>
       <div>
-      {questions.map((question) => (
-  <Link key={question.id} to={generatePath(QUESTION_ROUTE, { id: question.id })}>
-    <QuestionCard key={question.id} title={question.title} question={question.question} />
-  </Link>
-))}
+        {questions.map((question) => (
+          <Link key={question.id} to={generatePath(QUESTION_ROUTE, { id: question.id })}>
+            <QuestionCard question={question} />
+          </Link>
+        ))}
       </div>
     </div>
   );
 };
 
 export default Home;
+

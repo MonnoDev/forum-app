@@ -7,20 +7,25 @@ export const createComment = async (questionId, commentData) => {
     return response.data;
   };
 
-export const getComment = async (questionId) => {
+  export const getComments = async (questionId) => {
     const response = await axios.get(`${API_BASE_URL}/question/${questionId}/comments`);
     return response.data;
   };
 
   export const updateComment = async (comment) => {
     const response = await axios.put(
-      `${API_BASE_URL}/comments/${comment.id}`,
+      `${API_BASE_URL}/comment/${comment.id}`,
       comment
     );
     return response.data;
   };
 
-  export const deleteComment = async (id) => {
-    const response = await axios.delete(`${API_BASE_URL}/comments/${id}`);
+  export const deleteComment = async (commentId) => {
+    const response = await axios.delete(`${API_BASE_URL}/comment/${commentId}`);
     return response.data
   }
+
+  export const getComment = async (commentId) => {
+    const response = await axios.get(`${API_BASE_URL}/comment/${commentId}`);
+    return response.data;
+  };

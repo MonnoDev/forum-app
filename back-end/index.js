@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 const client = new MongoClient(URI);
-//works
+
 app.post('/register', async (req, res) => {
   try {
     const { displayName, email, password } = req.body;
@@ -25,7 +25,7 @@ app.post('/register', async (req, res) => {
     res.status(500).send(error);
   }
 });
-//works
+
 app.get('/register', async (req, res) => {
   try {
     const con = await client.connect();
@@ -37,7 +37,7 @@ app.get('/register', async (req, res) => {
     res.status(500).send(error);
   }
 });
-//works
+
 app.post('/question', async (req, res) => {
   try {
     const { title, question } = req.body;
@@ -50,7 +50,7 @@ app.post('/question', async (req, res) => {
     res.status(500).send(error);
   }
 });
-//works
+
 app.get('/questions', async (req, res) => {
   try {
     const con = await client.connect();
@@ -66,19 +66,24 @@ app.get('/questions', async (req, res) => {
     res.status(500).send(error);
   }
 });
-//works
+
 app.put('/question/:id', async (req, res) => {
   try {
     const questionId = req.params.id;
     const { title, question } = req.body;
+
+    // Add the logic to update the lastEdited timestamp
+    const lastEdited = new Date();
+
     const con = await client.connect();
     const collection = con.db(dbName).collection('Questions');
     const objectId = new ObjectId(questionId);
     const result = await collection.updateOne(
       { _id: objectId },
-      { $set: { title, question } },
+      { $set: { title, question, lastEdited } }, // Include the lastEdited field in the update
     );
     await con.close();
+
     if (result.modifiedCount === 0) {
       return res.status(404).json({ message: 'Question not found' });
     }
@@ -87,7 +92,7 @@ app.put('/question/:id', async (req, res) => {
     return res.status(500).send(error);
   }
 });
-//works
+
 app.get('/question/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -100,6 +105,7 @@ app.get('/question/:id', async (req, res) => {
     }
     const transformedData = {
       id: data._id.toString(),
+      edited: data.edited,
       ...data,
     };
     return res.send(transformedData);
@@ -108,7 +114,7 @@ app.get('/question/:id', async (req, res) => {
     return res.status(500).send(error.message);
   }
 });
-//works
+
 app.delete('/question/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -124,7 +130,7 @@ app.delete('/question/:id', async (req, res) => {
     return res.status(500).send(error);
   }
 });
-//works
+
 app.post('/question/:id/comments', async (req, res) => {
   try {
     const { id } = req.params; // Get the question ID from the URL parameter
@@ -155,21 +161,23 @@ app.get('/question/:id/comments', async (req, res) => {
     const con = await client.connect();
     const collection = con.db(dbName).collection('Comments');
 
-    const comments = await collection.aggregate([
-      {
-        $match: {
-          questionId: new ObjectId(id), // Convert questionId to ObjectId
+    const comments = await collection
+      .aggregate([
+        {
+          $match: {
+            questionId: new ObjectId(id), // Convert questionId to ObjectId
+          },
         },
-      },
-      {
-        $lookup: {
-          from: 'Questions',
-          localField: 'questionId',
-          foreignField: '_id',
-          as: 'question',
+        {
+          $lookup: {
+            from: 'Questions',
+            localField: 'questionId',
+            foreignField: '_id',
+            as: 'question',
+          },
         },
-      },
-    ]).toArray();
+      ])
+      .toArray();
 
     await con.close();
 
@@ -179,11 +187,12 @@ app.get('/question/:id/comments', async (req, res) => {
   }
 });
 
-// Update a comment /works
-app.put('/comments/:commentId', async (req, res) => {
+app.put('/comment/:commentId', async (req, res) => {
   try {
     const { commentId } = req.params;
     const { comment } = req.body;
+
+    const lastEdited = new Date();
 
     const commentObjectId = new ObjectId(commentId);
 
@@ -192,7 +201,7 @@ app.put('/comments/:commentId', async (req, res) => {
 
     const result = await collection.updateOne(
       { _id: commentObjectId },
-      { $set: { comment } }
+      { $set: { comment, lastEdited } },
     );
     await con.close();
 
@@ -206,8 +215,7 @@ app.put('/comments/:commentId', async (req, res) => {
   }
 });
 
-// Delete a comment /works
-app.delete('/comments/:commentId', async (req, res) => {
+app.delete('/comment/:commentId', async (req, res) => {
   try {
     const { commentId } = req.params;
 
@@ -224,6 +232,32 @@ app.delete('/comments/:commentId', async (req, res) => {
     }
 
     res.json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+app.get('/comment/:commentId', async (req, res) => {
+  try {
+    const { commentId } = req.params;
+
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Comments');
+
+    const comment = await collection.findOne({ _id: new ObjectId(commentId) });
+
+    const lastEdited = new Date();
+    await collection.updateOne(
+      { _id: new ObjectId(commentId) },
+      { $set: { lastEdited } }
+    );
+    await con.close();
+
+    if (!comment) {
+      return res.status(404).send('Comment not found');
+    }
+    const commentWithLastEdited = { ...comment, lastEdited };
+    res.send(commentWithLastEdited);
   } catch (error) {
     res.status(500).send(error);
   }
