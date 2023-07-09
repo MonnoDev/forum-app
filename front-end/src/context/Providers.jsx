@@ -1,9 +1,11 @@
 import { UserProvider } from "./UserContext";
 
-const Providers = ({children}) => {
+const Providers = ({ children }) => {
   return (
-    <div><UserProvider>{children}</UserProvider></div>
-  )
-}
+    <div>
+      <UserProvider>{children}</UserProvider>
+    </div>
+  );
+};
 
-export default Providers
+export default Providers;

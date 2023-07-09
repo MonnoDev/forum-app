@@ -64,5 +64,3 @@ const PostQuestion = ({ question }) => {
 };
 
 export default PostQuestion;
-
-

@@ -7,7 +7,10 @@ const AnswersAction = ({ comment, onEdit }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    const path = generatePath(EDIT_ANSWER_ROUTE, { id: comment._id, answerId: comment._id });
+    const path = generatePath(EDIT_ANSWER_ROUTE, {
+      id: comment._id,
+      answerId: comment._id,
+    });
     navigate(path);
   };
 
@@ -30,11 +33,3 @@ const AnswersAction = ({ comment, onEdit }) => {
 };
 
 export default AnswersAction;
-
-
-
-
-
-
-
-

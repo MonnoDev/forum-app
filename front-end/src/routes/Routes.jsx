@@ -13,11 +13,11 @@ const Routes = () => {
         <Route
           key={path}
           path={path}
-          element={(
+          element={
             <Layout>
               <Component />
             </Layout>
-          )}
+          }
         />
       ))}
     </RouteContainer>
@@ -25,4 +25,3 @@ const Routes = () => {
 };
 
 export default Routes;
-

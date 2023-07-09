@@ -1,12 +1,12 @@
- import { useState } from 'react';
-import { useNavigate, generatePath } from 'react-router-dom';
-import Button from '../../components/Button/Button';
-import TextArea from '../../components/TextArea/TextArea';
-import { createComment, updateComment } from '../../api/comments';
-import { QUESTION_ROUTE } from '../../routes/const';
+import { useState } from "react";
+import { useNavigate, generatePath } from "react-router-dom";
+import Button from "../../components/Button/Button";
+import TextArea from "../../components/TextArea/TextArea";
+import { createComment, updateComment } from "../../api/comments";
+import { QUESTION_ROUTE } from "../../routes/const";
 
 const PostAnswer = ({ questionId, comment }) => {
-  const [commentText, setCommentText] = useState(comment?.comment || '');
+  const [commentText, setCommentText] = useState(comment?.comment || "");
   const isEditing = !!comment;
   const navigate = useNavigate();
 
@@ -46,10 +46,9 @@ const PostAnswer = ({ questionId, comment }) => {
         onChange={(e) => setCommentText(e.target.value)}
         required
       />
-      <Button type="submit">{isEditing ? 'Edit' : 'Create'} Comment</Button>
+      <Button type="submit">{isEditing ? "Edit" : "Create"} Comment</Button>
     </form>
   );
 };
 
 export default PostAnswer;
-

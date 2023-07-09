@@ -1,12 +1,12 @@
-import Navigation from "../../components/Navigation/Navigation"
+import Navigation from "../../components/Navigation/Navigation";
 
-const ClientLayout = ({children}) => {
+const ClientLayout = ({ children }) => {
   return (
     <div>
-        <Navigation/>
-        <div>{children}</div>
+      <Navigation />
+      <div>{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default ClientLayout
+export default ClientLayout;

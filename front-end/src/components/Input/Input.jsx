@@ -1,7 +1,5 @@
-const Input = ({className, ...props}) => {
-  return (
-    <input className={`input ${className}`} {...props}/>
-  )
-}
+const Input = ({ className, ...props }) => {
+  return <input className={`input ${className}`} {...props} />;
+};
 
-export default Input
+export default Input;

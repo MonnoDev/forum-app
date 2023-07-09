@@ -14,44 +14,44 @@ export const HOME_ROUTE = "/";
 export const POST_QUESTION_ROUTE = `/post`;
 export const QUESTION_ROUTE = "/question/:id";
 export const EDIT_QUESTION_ROUTE = `${QUESTION_ROUTE}/edit`;
-export const EDIT_ANSWER_ROUTE = `${QUESTION_ROUTE}/editAnswer/:answerId`
+export const EDIT_ANSWER_ROUTE = `${QUESTION_ROUTE}/editAnswer/:answerId`;
 
 export const signinRoutes = {
-    Layout: SigninLayount,
-    routes: [ {
-        path: LOGIN_ROUTE,
-        Component: Login,
+  Layout: SigninLayount,
+  routes: [
+    {
+      path: LOGIN_ROUTE,
+      Component: Login,
     },
     {
-        path: REGISTER_ROUTE,
-        Component: Register,
-    }
-    ],
-    
+      path: REGISTER_ROUTE,
+      Component: Register,
+    },
+  ],
 };
 
 export const clientRoutes = {
-    Layout: ClientLayout,
-    routes: [ {
-        path: HOME_ROUTE,
-        Component: Home,
+  Layout: ClientLayout,
+  routes: [
+    {
+      path: HOME_ROUTE,
+      Component: Home,
     },
     {
-        path: POST_QUESTION_ROUTE,
-        Component: PostQuestion,
+      path: POST_QUESTION_ROUTE,
+      Component: PostQuestion,
     },
     {
-        path: EDIT_QUESTION_ROUTE,
-        Component: EditQuestion,
+      path: EDIT_QUESTION_ROUTE,
+      Component: EditQuestion,
     },
     {
-        path: QUESTION_ROUTE,
-        Component: Question,
+      path: QUESTION_ROUTE,
+      Component: Question,
     },
     {
-        path: EDIT_ANSWER_ROUTE,
-        Component: EditAnswer,
+      path: EDIT_ANSWER_ROUTE,
+      Component: EditAnswer,
     },
-    ],
-    
+  ],
 };

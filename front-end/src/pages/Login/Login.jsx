@@ -33,7 +33,8 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      {error && <div className="error">{error}</div>} {/* Display error message */}
+      {error && <div className="error">{error}</div>}{" "}
+      {/* Display error message */}
       <div>
         <Button>Login</Button>
       </div>
@@ -42,9 +43,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-
-

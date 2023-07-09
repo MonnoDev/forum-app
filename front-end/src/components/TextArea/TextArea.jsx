@@ -1,13 +1,12 @@
 const TextArea = ({ label, ...props }) => {
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <label>{label}:</label>
-        </div>
-        <textarea {...props}></textarea>
+        <label>{label}:</label>
       </div>
-    );
-  };
-  
-  export default TextArea;
-  
+      <textarea {...props}></textarea>
+    </div>
+  );
+};
+
+export default TextArea;

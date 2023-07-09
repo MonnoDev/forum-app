@@ -43,7 +43,7 @@ const UserProvider = ({ children }) => {
         setError(error.message); // Display the error message
       });
   };
-  
+
   const onLogin = (user) => {
     getUser()
       .then((response) => {
@@ -59,14 +59,14 @@ const UserProvider = ({ children }) => {
         setError(error.message); // Display the error message
       });
   };
-  
 
   return (
-    <UserContext.Provider value={{ user, loggedIn, onRegister, onLogin, error }}>
+    <UserContext.Provider
+      value={{ user, loggedIn, onRegister, onLogin, error }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
 
 export { UserContext, UserProvider };
-

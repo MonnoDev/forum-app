@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, generatePath } from "react-router-dom";
-import { getComment } from '../../api/comments';
-import PostAnswer from './PostAnswer';
-import Loading from '../../components/Loading/Loading';
-import { QUESTION_ROUTE } from '../../routes/const';
+import { getComment } from "../../api/comments";
+import PostAnswer from "./PostAnswer";
+import Loading from "../../components/Loading/Loading";
+import { QUESTION_ROUTE } from "../../routes/const";
 
 const EditAnswer = () => {
   const { answerId } = useParams();
@@ -39,7 +39,13 @@ const EditAnswer = () => {
     navigate(route);
   };
 
-  return <PostAnswer questionId={comment.questionId} comment={comment} onCancelEdit={onCancelEdit} />;
+  return (
+    <PostAnswer
+      questionId={comment.questionId}
+      comment={comment}
+      onCancelEdit={onCancelEdit}
+    />
+  );
 };
 
 export default EditAnswer;

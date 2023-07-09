@@ -30,7 +30,6 @@ const Question = () => {
     getComments(id)
       .then((response) => {
         setComments(response);
-        console.log("Comments:", response); // Log the comments data
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +47,8 @@ const Question = () => {
   return (
     <div>
       <QuestionActions id={question.id} />
-      <QuestionCard question={question} /> {/* Pass the entire question object */}
+      <QuestionCard question={question} />{" "}
+      {/* Pass the entire question object */}
       <div>
         <PostAnswer questionId={question.id} />
       </div>

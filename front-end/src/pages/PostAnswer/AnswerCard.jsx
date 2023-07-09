@@ -96,7 +96,9 @@ const AnswerCard = ({ comment }) => {
       </div>
       <div className={`answerContainer ${isNew ? "new" : ""}`}>
         Comment: {comment.comment}
-        <div className="edited">{comment.lastEdited && <span>Edited</span>}</div>
+        <div className="edited">
+          {comment.lastEdited && <span>Edited</span>}
+        </div>
         {!isEditing && (
           <AnswersAction
             comment={comment}
@@ -117,4 +119,3 @@ const AnswerCard = ({ comment }) => {
 };
 
 export default AnswerCard;
-
