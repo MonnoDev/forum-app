@@ -1,19 +1,18 @@
+import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
-import { useState, useContext } from "react";
 import Button from "../../components/Button/Button";
 import FormField from "../../components/FormField/FormField";
 
-
 const Register = () => {
-  const {onRegister} = useContext(UserContext)
+  const { onRegister, error } = useContext(UserContext);
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const user = { displayName, email, password };
-    onRegister(user);
+    const newUser = { displayName, email, password };
+    onRegister(newUser);
   };
 
   return (
@@ -39,6 +38,7 @@ const Register = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
+      {error && <div className="error">{error}</div>}
       <div>
         <Button>Register</Button>
       </div>
@@ -47,3 +47,5 @@ const Register = () => {
 };
 
 export default Register;
+
+

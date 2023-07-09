@@ -18,6 +18,19 @@ app.post('/register', async (req, res) => {
     const { displayName, email, password } = req.body;
     const con = await client.connect();
     const collection = con.db(dbName).collection('Registered');
+
+    // Check if username or email already exists
+    const existingUser = await collection.findOne({
+      $or: [{ displayName: { $eq: displayName } }, { email: { $eq: email } }],
+    });
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: 'Username or email already exists' });
+    }
+
+    // Insert the new user
     const data = await collection.insertOne({ displayName, email, password });
     await con.close();
     res.send(data);
@@ -26,7 +39,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.get('/register', async (req, res) => {
+app.get('/login', async (req, res) => {
   try {
     const con = await client.connect();
     const collection = con.db(dbName).collection('Registered');
@@ -249,7 +262,7 @@ app.get('/comment/:commentId', async (req, res) => {
     const lastEdited = new Date();
     await collection.updateOne(
       { _id: new ObjectId(commentId) },
-      { $set: { lastEdited } }
+      { $set: { lastEdited } },
     );
     await con.close();
 
