@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import AnswersAction from "./AnswersAction";
 import EditAnswer from "./EditAnswer";
 import { SlDislike, SlLike } from "react-icons/sl";
+import { formatDate } from "../../utils/date";
 
 const AnswerCard = ({ comment }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isNew, setIsNew] = useState(comment.isNew); // Track if the comment is new
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
@@ -69,19 +69,8 @@ const AnswerCard = ({ comment }) => {
     }
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-    // Implement logic for handling edit
-  };
 
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    // Implement logic for handling cancel edit
-  };
-
-  const handleUpdate = () => {
-    // Implement logic for handling update
-  };
+  const formattedLastEdited = comment.lastEdited ? formatDate(comment.lastEdited) : null;
 
   return (
     <div>
@@ -94,23 +83,23 @@ const AnswerCard = ({ comment }) => {
         <SlLike onClick={handleLike} className={isLiked ? "active" : ""} />
         <span>{likeCount}</span>
       </div>
-      <div className={`answerContainer ${isNew ? "new" : ""}`}>
+      <div className="answerContainer">
         Comment: {comment.comment}
         <div className="edited">
-          {comment.lastEdited && <span>Edited</span>}
+          {formattedLastEdited && (
+            <span>Edited on {formattedLastEdited}</span>
+          )}
         </div>
         {!isEditing && (
           <AnswersAction
             comment={comment}
-            onEdit={handleEdit}
-            onUpdate={handleUpdate}
+
           />
         )}
         {isEditing && (
           <EditAnswer
             comment={comment}
-            onCancelEdit={handleCancelEdit}
-            onUpdate={handleUpdate}
+
           />
         )}
       </div>
@@ -119,3 +108,4 @@ const AnswerCard = ({ comment }) => {
 };
 
 export default AnswerCard;
+

@@ -46,11 +46,10 @@ const Question = () => {
 
   return (
     <div>
-      <QuestionActions id={question.id} />
-      <QuestionCard question={question} />{" "}
-      {/* Pass the entire question object */}
+      <QuestionActions id={id} />
+      <QuestionCard question={question} />
       <div>
-        <PostAnswer questionId={question.id} />
+        <PostAnswer questionId={id} />
       </div>
       <div>
         {comments.map((comment) => (

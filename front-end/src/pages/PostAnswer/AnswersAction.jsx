@@ -1,6 +1,6 @@
 import { useNavigate, generatePath } from "react-router-dom";
 import Button from "../../components/Button/Button";
-import { EDIT_ANSWER_ROUTE, QUESTION_ROUTE } from "../../routes/const";
+import { EDIT_ANSWER_ROUTE} from "../../routes/const";
 import { deleteComment } from "../../api/comments";
 
 const AnswersAction = ({ comment, onEdit }) => {

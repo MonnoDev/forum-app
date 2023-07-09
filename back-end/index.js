@@ -128,13 +128,17 @@ app.delete('/question/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Questions');
-    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    const questionCollection = con.db(dbName).collection('Questions');
+    const commentCollection = con.db(dbName).collection('Comments');
+    const questionResult = await questionCollection.deleteOne({ _id: new ObjectId(id) });
+    await commentCollection.deleteMany({ questionId: new ObjectId(id) });
     await con.close();
-    if (result.deletedCount === 0) {
+
+    if (questionResult.deletedCount === 0) {
       return res.status(404).json({ message: 'Question not found' });
     }
-    return res.json({ message: 'Question deleted successfully' });
+
+    return res.json({ message: 'Question and associated comments deleted successfully' });
   } catch (error) {
     return res.status(500).send(error);
   }

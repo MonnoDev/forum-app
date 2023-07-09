@@ -15,7 +15,6 @@ const EditAnswer = () => {
     setIsLoading(true);
     getComment(answerId)
       .then((response) => {
-        console.log("Comment:", response);
         setComment(response);
       })
       .catch((error) => {
