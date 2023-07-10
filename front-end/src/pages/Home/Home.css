@@ -11,12 +11,14 @@
   margin-right: 15px;
 }
 
-.sortContainer {
+.sortContainer,
+.filterContainer {
   text-align: center;
   margin: 15px;
 }
 
-.sortContainer select {
+.sortContainer select,
+.filterContainer select {
   margin-left: 5px;
   border: none;
   border-bottom: 2px solid #39393a;

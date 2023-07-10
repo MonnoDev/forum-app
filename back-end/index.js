@@ -128,11 +128,33 @@ app.post('/question', async (req, res) => {
 
 app.get('/questions', async (req, res) => {
   try {
-    const { sortOrder } = req.query;
+    const { sortOrder, answersCountOrder } = req.query;
     const con = await client.connect();
-    const sortQuery = { postedDate: sortOrder === 'asc' ? 1 : -1 };
     const collection = con.db(dbName).collection('Questions');
-    const data = await collection.find().sort(sortQuery).toArray();
+    const data = await collection.aggregate([
+      {
+        $lookup: {
+          from: 'Answers',
+          localField: '_id',
+          foreignField: 'questionId',
+          as: 'answers',
+        },
+      },
+      {
+        $addFields: {
+          answersCount: { $size: '$answers' },
+        },
+      },
+      {
+        $unset: 'answers',
+      },
+      {
+        $sort: {
+          postedDate: sortOrder === 'asc' ? 1 : -1,
+          answersCount: answersCountOrder === 'asc' ? 1 : -1,
+        },
+      },
+    ]).toArray();
     await con.close();
     const transformedData = data.map(({ _id, ...rest }) => ({
       id: _id.toString(),

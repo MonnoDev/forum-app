@@ -7,9 +7,9 @@ export const createQuestion = async (question) => {
   return response.data;
 };
 
-export const getQuestions = async (sortOrder) => {
+export const getQuestions = async (sortOrder, answersCountOrder) => {
   const response = await axios.get(`${API_BASE_URL}/questions`, {
-    params: { sortOrder },
+    params: { sortOrder, answersCountOrder },
   });
   return response.data;
 };

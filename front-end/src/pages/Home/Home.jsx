@@ -10,13 +10,24 @@ import "./Home.css";
 const Home = () => {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortOption, setSortOption] = useState("newest");
+  const [filterType, setFilterType] = useState("all");
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+
+  const handleSortChange = (event) => {
+    setSortOption(event.target.value);
+  };
+
+  const handleFilterChange = (event) => {
+    setFilterType(event.target.value);
+  };
 
   useEffect(() => {
     setIsLoading(true);
-    getQuestions(sortOrder)
+    getQuestions(sortOption, filterType)
       .then((response) => {
         setQuestions(response);
+        setFilteredQuestions(response);
       })
       .catch((error) => {
         console.log(error);
@@ -24,10 +35,32 @@ const Home = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [sortOrder]);
+  }, [sortOption, filterType]);
 
-  const handleSortChange = (event) => {
-    setSortOrder(event.target.value);
+  useEffect(() => {
+    filterQuestions();
+  }, [filterType, questions]);
+
+  const filterQuestions = () => {
+    let filtered = [...questions];
+
+    if (filterType === "answered") {
+      filtered = filtered.filter((question) => question.answersCount > 0);
+    } else if (filterType === "unanswered") {
+      filtered = filtered.filter((question) => question.answersCount === 0);
+    }
+
+    if (sortOption === "newest") {
+      filtered.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+    } else if (sortOption === "oldest") {
+      filtered.sort((a, b) => new Date(a.postedDate) - new Date(b.postedDate));
+    } else if (sortOption === "most_responses") {
+      filtered.sort((a, b) => b.answersCount - a.answersCount);
+    } else if (sortOption === "least_responses") {
+      filtered.sort((a, b) => a.answersCount - b.answersCount);
+    }
+
+    setFilteredQuestions(filtered);
   };
 
   if (isLoading) {
@@ -42,7 +75,11 @@ const Home = () => {
             <Button>Post a question</Button>
           </Link>
         </div>
-        <div>Curiosity is the spark that ignites knowledge, and right now, it seems like the world is eagerly waiting for your questions to illuminate the path ahead.</div>
+        <div>
+          Curiosity is the spark that ignites knowledge, and right now, it seems
+          like the world is eagerly waiting for your questions to illuminate the
+          path ahead.
+        </div>
       </div>
     );
   }
@@ -55,14 +92,24 @@ const Home = () => {
         </Link>
       </div>
       <div>
-        <div className="sortContainer">
-          Sort by:
-          <select value={sortOrder} onChange={handleSortChange}>
-            <option value="desc">Newest First</option>
-            <option value="asc">Oldest First</option>
+        <div className="filterContainer">
+          Filter:
+          <select value={filterType} onChange={handleFilterChange}>
+            <option value="all">All</option>
+            <option value="answered">Answered</option>
+            <option value="unanswered">Unanswered</option>
           </select>
         </div>
-        {questions.map((question) => (
+        <div className="sortContainer">
+          Sort by:
+          <select value={sortOption} onChange={handleSortChange}>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="most_responses">Most Responses</option>
+            <option value="least_responses">Least Responses</option>
+          </select>
+        </div>
+        {filteredQuestions.map((question) => (
           <Link
             key={question.id}
             to={generatePath(QUESTION_ROUTE, { id: question.id })}
