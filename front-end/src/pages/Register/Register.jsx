@@ -35,6 +35,7 @@ const Register = () => {
         label="Password"
         type="password"
         value={password}
+        minLength={6} maxLength={20}
         onChange={(e) => setPassword(e.target.value)}
         required
       />

@@ -6,10 +6,10 @@ const QuestionCard = ({ question }) => {
   const formattedLastEdited = lastEdited ? formatDate(lastEdited) : null;
 
   return (
-    <div className="container-question">
-      <h2>Title: {title}</h2>
-      <div>Question: {questionText}</div>
-      <div>Posted date: {postedDate}</div>
+    <div className="questionCardContainer">
+      <h2 className="questionTitle">{title}</h2>
+      <div className="questionText">Question: {questionText}</div>
+      <div className="postedDate">Posted date: {postedDate}</div>
       {formattedLastEdited && (
         <span className="edited">Edited on {formattedLastEdited}</span>
       )}
@@ -18,3 +18,4 @@ const QuestionCard = ({ question }) => {
 };
 
 export default QuestionCard;
+

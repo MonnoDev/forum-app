@@ -5,3 +5,7 @@ export const checkUser = (users, checkingUser) => {
       users.password === checkingUser.password
   );
 };
+
+export const showDisplayName = (user) => {
+  return user ? `${user.displayName}` : "";
+};

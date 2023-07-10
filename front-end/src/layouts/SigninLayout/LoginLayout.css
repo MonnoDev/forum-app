@@ -1,0 +1,55 @@
+.loginConainer {
+    height: 500px;
+    width: 600px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+      rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+      rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  }
+  
+  input {
+    border: none;
+    border-bottom: 2px solid  #39393a;
+    padding: 5px;
+    text-align: left;
+    font-size: 18px;
+    width: 250px;
+  }
+  
+  label {
+    font-weight: bold;
+    text-align: left;
+  }
+
+  h2{
+    margin-top: 35px;
+  }
+  
+  .loginConainer div {
+    margin: 10px;
+  }
+  
+  input:focus {
+    outline: none;
+  }
+  
+  button {
+    width: 250px;
+    margin: 5px;
+  }
+
+  form{
+    margin-top: 50px;
+  }
+
+  .profileButton{
+    text-align: right;
+    margin-right: 15px;
+    margin-top: 15px;
+  }
+

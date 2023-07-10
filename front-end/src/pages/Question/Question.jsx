@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import { getQuestion } from "../../api/questions";
-import { getComments } from "../../api/comments";
+import { getAnswers } from "../../api/answers";
 import QuestionCard from "../Home/QuestionCard";
 import QuestionActions from "./QuestionActions";
 import AnswerCard from "../PostAnswer/AnswerCard";
 import PostAnswer from "../PostAnswer/PostAnswer";
+import Button from "../../components/Button/Button";
+import { HOME_ROUTE } from "../../routes/const";
 
 const Question = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [comments, setComments] = useState([]);
+  const [answers, setanswers] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -27,9 +29,9 @@ const Question = () => {
         setIsLoading(false);
       });
 
-    getComments(id)
+    getAnswers(id)
       .then((response) => {
-        setComments(response);
+        setanswers(response);
       })
       .catch((error) => {
         console.log(error);
@@ -46,15 +48,23 @@ const Question = () => {
 
   return (
     <div>
-      <QuestionActions id={id} />
-      <QuestionCard question={question} />
-      <div>
-        <PostAnswer questionId={id} />
+      <div className="questionButton">
+             <Link to={HOME_ROUTE}>
+        <Button>Back to questions</Button>
+      </Link> 
       </div>
+
       <div>
-        {comments.map((comment) => (
-          <AnswerCard key={comment._id} comment={comment} />
-        ))}
+        <QuestionActions id={id} />
+        <QuestionCard question={question} />
+        <div>
+          <PostAnswer questionId={id} />
+        </div>
+        <div>
+          {answers.map((answer) => (
+            <AnswerCard key={answer._id} answer={answer} />
+          ))}
+        </div>
       </div>
     </div>
   );

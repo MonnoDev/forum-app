@@ -1,5 +1,12 @@
-const Input = ({ className, ...props }) => {
-  return <input className={`input ${className}`} {...props} />;
+const Input = ({ className, minLength, maxLength, ...props }) => {
+  return (
+    <input
+      className={`input ${className}`}
+      minLength={minLength}
+      maxLength={maxLength}
+      {...props}
+    />
+  );
 };
 
 export default Input;

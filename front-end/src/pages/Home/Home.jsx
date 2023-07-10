@@ -34,19 +34,28 @@ const Home = () => {
   }
 
   if (questions.length === 0) {
-    return <div>There are no questions yet.</div>;
+    return (
+      <div className="buttonContainer">
+        <div>
+          <Link to={POST_QUESTION_ROUTE}>
+            <Button>Post a question</Button>
+          </Link>
+        </div>
+        <div>There are no questions yet.</div>
+      </div>
+    );
   }
 
   return (
     <div>
-      <div>
+      <div className="questionRouteContainer">
         <Link to={POST_QUESTION_ROUTE}>
           <Button>Post a question</Button>
         </Link>
       </div>
       <div>
-        <div>
-          Sort by:
+        <div className="sortContainer">
+          Sort by: 
           <select value={sortOrder} onChange={handleSortChange}>
             <option value="desc">Newest First</option>
             <option value="asc">Oldest First</option>
@@ -66,3 +75,4 @@ const Home = () => {
 };
 
 export default Home;
+

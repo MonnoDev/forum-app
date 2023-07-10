@@ -1,0 +1,46 @@
+.answerPostContainer {
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  background-color: #f5f5f5;
+}
+
+.answerPostContainer div, .answerPostContainer form, .answerPostContainer label, .answerPostContainer textarea, .answerPostContainer svg, .answerPostContainer span{
+  background-color: #f5f5f5;
+}
+
+.answerPostContainer form{
+  margin-top: 0;
+  margin: 15px;
+}
+
+.answerPostContainer textarea{
+  margin-top: 15px;
+  border: none;
+  border-bottom: 2px solid  #39393a;
+  height: 100px;
+  width: 100vh;
+}
+
+.answerButtonContainer, .answerPostContainerButton{
+  text-align: right;
+}
+
+.answerButtonContainer{
+  margin-right: 15px;
+}
+
+.answerPost{
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
+.answerPostReactions{
+  padding-top: 15px;
+  padding-left: 15px;
+}
+
+.answerPostReactions svg{
+  margin-right: 5px;
+  margin-left: 5px;
+}

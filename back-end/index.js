@@ -17,7 +17,7 @@ app.post('/register', async (req, res) => {
   try {
     const { displayName, email, password } = req.body;
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Registered');
+    const collection = con.db(dbName).collection('Users');
     const existingUser = await collection.findOne({
       $or: [{ displayName: { $eq: displayName } }, { email: { $eq: email } }],
     });
@@ -34,10 +34,10 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.get('/login', async (req, res) => {
+app.get('/users', async (req, res) => {
   try {
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Registered');
+    const collection = con.db(dbName).collection('Users');
     const data = await collection.find().toArray();
     await con.close();
     res.send(data);
@@ -46,10 +46,66 @@ app.get('/login', async (req, res) => {
   }
 });
 
+app.get('/user/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Users');
+    const data = await collection.findOne({ _id: new ObjectId(id) });
+    await con.close();
+    if (!data) {
+      return res.status(404).send('User not found');
+    }
+    return res.send(data);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
+app.put('/user/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { displayName, email, password } = req.body;
+    const con = await client.connect();
+    const collection = con.db(dbName).collection('Users');
+    const newUserId = new ObjectId(userId);
+    const result = await collection.updateOne(
+      { _id: newUserId },
+      { $set: { displayName, email, password } },
+    );
+    if (result.modifiedCount === 0) {
+      await con.close();
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const updatedUser = await collection.findOne({ _id: newUserId });
+    await con.close();
+    return res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
+app.delete('/user/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const con = await client.connect();
+    const usersCollection = con.db(dbName).collection('Users');
+    const userResult = await usersCollection.deleteOne({ _id: new ObjectId(id) });
+    await con.close();
+    if (userResult.deletedCount === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    return res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
 app.post('/question', async (req, res) => {
   try {
     const { title, question } = req.body;
     const postedDate = new Date();
+    postedDate.setHours(postedDate.getHours() + 3);
     const formattedDate = postedDate
       .toISOString()
       .replace(/T/, ' ')
@@ -129,31 +185,29 @@ app.delete('/question/:id', async (req, res) => {
     const { id } = req.params;
     const con = await client.connect();
     const questionCollection = con.db(dbName).collection('Questions');
-    const commentCollection = con.db(dbName).collection('Comments');
+    const answerCollection = con.db(dbName).collection('Answers');
     const questionResult = await questionCollection.deleteOne({ _id: new ObjectId(id) });
-    await commentCollection.deleteMany({ questionId: new ObjectId(id) });
+    await answerCollection.deleteMany({ questionId: new ObjectId(id) });
     await con.close();
-
     if (questionResult.deletedCount === 0) {
       return res.status(404).json({ message: 'Question not found' });
     }
-
-    return res.json({ message: 'Question and associated comments deleted successfully' });
+    return res.json({ message: 'Question and associated answers deleted successfully' });
   } catch (error) {
     return res.status(500).send(error);
   }
 });
 
-app.post('/question/:id/comments', async (req, res) => {
+app.post('/question/:id/answers', async (req, res) => {
   try {
     const { id } = req.params;
-    const { comment } = req.body;
+    const { answer } = req.body;
     const questionObjectId = new ObjectId(id);
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Comments');
+    const collection = con.db(dbName).collection('Answers');
     const data = await collection.insertOne({
       questionId: questionObjectId,
-      comment,
+      answer,
     });
     await con.close();
     res.send({ id: data.insertedId });
@@ -162,12 +216,12 @@ app.post('/question/:id/comments', async (req, res) => {
   }
 });
 
-app.get('/question/:id/comments', async (req, res) => {
+app.get('/question/:id/answers', async (req, res) => {
   try {
     const { id } = req.params;
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Comments');
-    const comments = await collection
+    const collection = con.db(dbName).collection('Answers');
+    const answers = await collection
       .aggregate([
         {
           $match: {
@@ -185,68 +239,68 @@ app.get('/question/:id/comments', async (req, res) => {
       ])
       .toArray();
     await con.close();
-    res.send(comments);
+    res.send(answers);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-app.put('/comment/:commentId', async (req, res) => {
+app.put('/answer/:answerId', async (req, res) => {
   try {
-    const { commentId } = req.params;
-    const { comment } = req.body;
+    const { answerId } = req.params;
+    const { answer } = req.body;
     const lastEdited = new Date();
-    const commentObjectId = new ObjectId(commentId);
+    const answerObjectId = new ObjectId(answerId);
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Comments');
+    const collection = con.db(dbName).collection('Answers');
     const result = await collection.updateOne(
-      { _id: commentObjectId },
-      { $set: { comment, lastEdited } },
+      { _id: answerObjectId },
+      { $set: { answer, lastEdited } },
     );
     await con.close();
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ message: 'Comment not found' });
+      return res.status(404).json({ message: 'answer not found' });
     }
-    return res.json({ message: 'Comment updated successfully' }); // Add a return statement here
+    return res.json({ message: 'answer updated successfully' }); // Add a return statement here
   } catch (error) {
     return res.status(500).send(error);
   }
 });
 
-app.delete('/comment/:commentId', async (req, res) => {
+app.delete('/answer/:answerId', async (req, res) => {
   try {
-    const { commentId } = req.params;
-    const commentObjectId = new ObjectId(commentId);
+    const { answerId } = req.params;
+    const answerObjectId = new ObjectId(answerId);
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Comments');
-    const result = await collection.deleteOne({ _id: commentObjectId });
+    const collection = con.db(dbName).collection('Answers');
+    const result = await collection.deleteOne({ _id: answerObjectId });
     await con.close();
     if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Comment not found' });
+      return res.status(404).json({ message: 'answer not found' });
     }
-    return res.json({ message: 'Comment deleted successfully' }); // Add a return statement here
+    return res.json({ message: 'answer deleted successfully' }); // Add a return statement here
   } catch (error) {
     return res.status(500).send(error);
   }
 });
 
-app.get('/comment/:commentId', async (req, res) => {
+app.get('/answer/:answerId', async (req, res) => {
   try {
-    const { commentId } = req.params;
+    const { answerId } = req.params;
     const con = await client.connect();
-    const collection = con.db(dbName).collection('Comments');
-    const comment = await collection.findOne({ _id: new ObjectId(commentId) });
+    const collection = con.db(dbName).collection('Answers');
+    const answer = await collection.findOne({ _id: new ObjectId(answerId) });
     const lastEdited = new Date();
     await collection.updateOne(
-      { _id: new ObjectId(commentId) },
+      { _id: new ObjectId(answerId) },
       { $set: { lastEdited } },
     );
     await con.close();
-    if (!comment) {
-      return res.status(404).send('Comment not found');
+    if (!answer) {
+      return res.status(404).send('answer not found');
     }
-    const commentWithLastEdited = { ...comment, lastEdited };
-    return res.send(commentWithLastEdited); // Add a return statement here
+    const answerWithLastEdited = { ...answer, lastEdited };
+    return res.send(answerWithLastEdited); // Add a return statement here
   } catch (error) {
     return res.status(500).send(error);
   }

@@ -2,6 +2,7 @@ import { useNavigate, generatePath } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import { EDIT_QUESTION_ROUTE, HOME_ROUTE } from "../../routes/const";
 import { deleteQuestion } from "../../api/questions";
+import "./Question.css"
 
 const QuestionActions = ({ id }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const QuestionActions = ({ id }) => {
   };
 
   return (
-    <div>
+    <div className="questionButtons">
       <Button onClick={onEdit}>Edit Question</Button>
       <Button onClick={onDelete}>Delete Question</Button>
     </div>

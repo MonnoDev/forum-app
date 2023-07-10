@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useNavigate, generatePath } from "react-router-dom";
+import { useNavigate, generatePath, Link } from "react-router-dom";
 import FormField from "../../components/FormField/FormField";
 import Button from "../../components/Button/Button";
 import TextArea from "../../components/TextArea/TextArea";
 import { createQuestion, updateQuestion } from "../../api/questions";
 import { QUESTION_ROUTE, HOME_ROUTE } from "../../routes/const";
+import "../../style/FormStyle.css";
 
 const PostQuestion = ({ question }) => {
   const [title, setTitle] = useState(question?.title || "");
@@ -22,10 +23,10 @@ const PostQuestion = ({ question }) => {
     };
 
     if (isEditing) {
-      const updatedQuestion = { id: question.id, ...submittingQuestion };
+      const updatedQuestion = { id: question._id, ...submittingQuestion };
       updateQuestion(updatedQuestion)
         .then(() => {
-          const route = generatePath(QUESTION_ROUTE, { id: question.id });
+          const route = generatePath(QUESTION_ROUTE, { id: question._id });
           navigate(route);
         })
         .catch((error) => {
@@ -43,23 +44,36 @@ const PostQuestion = ({ question }) => {
   };
 
   return (
-    <form onSubmit={onSubmitHandler}>
-      <FormField
-        label="Title"
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <TextArea
-        label="What is your question?"
-        type="textarea"
-        value={questionText}
-        onChange={(e) => setQuestionText(e.target.value)}
-        required
-      />
-      <Button>{isEditing ? "Edit" : "Create"} Question</Button>
-    </form>
+    <div>
+      <div className="buttonConatiner">
+        <Link to={HOME_ROUTE}>
+          <Button>Back to questions</Button>
+        </Link>
+      </div>
+      <div className="container">
+        <form className="form" onSubmit={onSubmitHandler}>
+          <FormField
+            className="formField"
+            label="Title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <TextArea
+            className="textArea"
+            label="What is your question?"
+            type="textarea"
+            value={questionText}
+            onChange={(e) => setQuestionText(e.target.value)}
+            required
+          />
+          <Button className="button">
+            {isEditing ? "Edit" : "Create"} Question
+          </Button>
+        </form>
+      </div>
+    </div>
   );
 };
 

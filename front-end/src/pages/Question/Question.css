@@ -1,0 +1,11 @@
+.questionButtons{
+    text-align: right;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.questionButton{
+    text-align: right;
+    margin-right: 15px;
+}

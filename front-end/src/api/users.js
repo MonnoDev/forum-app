@@ -11,7 +11,22 @@ export const createUser = async (newUser) => {
   }
 };
 
-export const getUser = async () => {
-  const response = await axios.get(`${API_BASE_URL}/login`);
+export const getUsers = async () => {
+  const response = await axios.get(`${API_BASE_URL}/users`);
+  return response.data;
+};
+
+export const updateUser = async (id, updatingUser) => {
+  const response = await axios.put(`${API_BASE_URL}/user/${id}`, updatingUser);
+  return response.data;
+};
+
+export const getUser = async (id) => {
+  const response = await axios.get(`${API_BASE_URL}/user/${id}`);
+  return response.data;
+};
+
+export const deleteUser = async (id) => {
+  const response = await axios.delete(`${API_BASE_URL}/user/${id}`);
   return response.data;
 };

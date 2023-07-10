@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    width: 500px;
+    height: 500px;
+    padding: 40px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+    rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+    rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  }
+  
+  .formField {
+    background-color: #f1f1f1;
+    margin-bottom: 16px;
+    width: 400px;
+  }
+
+  .container label,   .container div{
+    background-color: #f1f1f1;
+  }
+  
+  .textArea {
+    background-color: #f1f1f1;
+    border: none;
+    border-bottom: 2px solid  #39393a;
+    text-align: left;
+    font-size: 18px;
+    height: 300px;
+    width: 400px;
+
+  }
+
+  .buttonConatiner{
+    text-align: right;
+    margin-top: 15px;
+    margin-right: 15px;
+  }

@@ -1,23 +1,23 @@
 import { useNavigate, generatePath } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import { EDIT_ANSWER_ROUTE} from "../../routes/const";
-import { deleteComment } from "../../api/comments";
+import { deleteAnswer } from "../../api/answers";
 
-const AnswersAction = ({ comment, onEdit }) => {
+const AnswersAction = ({ answer, onEdit }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
     const path = generatePath(EDIT_ANSWER_ROUTE, {
-      id: comment._id,
-      answerId: comment._id,
+      id: answer._id,
+      answerId: answer._id,
     });
     navigate(path);
   };
 
   const handleDelete = () => {
-    deleteComment(comment._id)
+    deleteAnswer(answer._id)
       .then(() => {
-        window.location.reload(); // Reload the page after deleting the comment
+        window.location.reload(); // Reload the page after deleting the answer
       })
       .catch((error) => {
         console.log(error);
@@ -26,8 +26,8 @@ const AnswersAction = ({ comment, onEdit }) => {
 
   return (
     <div>
-      <Button onClick={handleEdit}>Edit Comment</Button>
-      <Button onClick={handleDelete}>Delete Comment</Button>
+      <Button onClick={handleEdit}>Edit Answer</Button>
+      <Button onClick={handleDelete}>Delete Answer</Button>
     </div>
   );
 };

@@ -1,0 +1,35 @@
+.navigationContainer {
+  background-color: #39393a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+img {
+  width: 40px;
+  height: 40px;
+  background-color: #39393a;
+}
+
+.userContainer {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  background-color: #39393a;
+  color: #ffffff;
+}
+
+.userName {
+  margin-left: 10px;
+  background-color: #39393a;
+}
+
+.userName a{
+    background-color: #39393a;
+    color: #ffffff;
+}
+
+.navigationContainer svg {
+  background-color: #39393a;
+}
