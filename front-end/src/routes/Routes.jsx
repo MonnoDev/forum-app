@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { UserContext } from "../context/UserContext";
 import { Routes as RouteContainer, Route } from "react-router-dom";
 import { signinRoutes, clientRoutes } from "./const";
@@ -22,6 +23,10 @@ const Routes = () => {
       ))}
     </RouteContainer>
   );
+};
+
+Routes.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default Routes;

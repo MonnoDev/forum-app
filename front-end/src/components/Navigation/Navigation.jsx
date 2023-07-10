@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { showDisplayName } from "../../utils/user";
 import { RiUser6Line } from "react-icons/ri";
+import { PROFILE_ROUTE } from "../../routes/const";
 import logo from "../../utils/logo_transparent.png";
 import "./Navigation.css";
-import {PROFILE_ROUTE} from "../../routes/const"
 
 const Navigation = () => {
   const { user } = useContext(UserContext);

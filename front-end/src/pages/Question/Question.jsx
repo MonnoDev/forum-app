@@ -1,14 +1,15 @@
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import Loading from "../../components/Loading/Loading";
 import { getQuestion } from "../../api/questions";
 import { getAnswers } from "../../api/answers";
+import { HOME_ROUTE } from "../../routes/const";
+import Loading from "../../components/Loading/Loading";
 import QuestionCard from "../Home/QuestionCard";
 import QuestionActions from "./QuestionActions";
-import AnswerCard from "../PostAnswer/AnswerCard";
-import PostAnswer from "../PostAnswer/PostAnswer";
+import AnswerCard from "../Answer/AnswerCard";
+import PostAnswer from "../Answer/PostAnswer";
 import Button from "../../components/Button/Button";
-import { HOME_ROUTE } from "../../routes/const";
 
 const Question = () => {
   const { id } = useParams();
@@ -49,9 +50,9 @@ const Question = () => {
   return (
     <div>
       <div className="questionButton">
-             <Link to={HOME_ROUTE}>
-        <Button>Back to questions</Button>
-      </Link> 
+        <Link to={HOME_ROUTE}>
+          <Button>Back to questions</Button>
+        </Link>
       </div>
 
       <div>
@@ -70,4 +71,9 @@ const Question = () => {
   );
 };
 
+Question.propTypes = {
+  id: PropTypes.string.isRequired,
+};
+
 export default Question;
+

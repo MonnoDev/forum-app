@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, generatePath } from "react-router-dom";
 import { getAnswer } from "../../api/answers";
+import { QUESTION_ROUTE } from "../../routes/const";
 import PostAnswer from "./PostAnswer";
 import Loading from "../../components/Loading/Loading";
-import { QUESTION_ROUTE } from "../../routes/const";
 
 const EditAnswer = () => {
   const { answerId } = useParams();
@@ -30,7 +31,7 @@ const EditAnswer = () => {
   }
 
   if (!answer) {
-    return <div>answer not found</div>;
+    return <div>Answer not found</div>;
   }
 
   const onCancelEdit = () => {
@@ -47,4 +48,9 @@ const EditAnswer = () => {
   );
 };
 
+EditAnswer.propTypes = {
+  answerId: PropTypes.string.isRequired,
+};
+
 export default EditAnswer;
+

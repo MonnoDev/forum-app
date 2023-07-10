@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import { REGISTER_ROUTE } from "../../routes/const";
 import Button from "../../components/Button/Button";
 import FormField from "../../components/FormField/FormField";
-import { REGISTER_ROUTE } from "../../routes/const";
 
 const Login = () => {
   const { onLogin, error } = useContext(UserContext);
@@ -35,10 +36,18 @@ const Login = () => {
       {error && <div className="error">{error}</div>}{" "}
       <div>
         <Button>Login</Button>
-        <Link to={REGISTER_ROUTE}><Button>Register</Button></Link>
+        <Link to={REGISTER_ROUTE}>
+          <Button>Register</Button>
+        </Link>
       </div>
     </form>
   );
 };
 
+Login.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
 export default Login;
+

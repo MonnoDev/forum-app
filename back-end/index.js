@@ -90,7 +90,9 @@ app.delete('/user/:id', async (req, res) => {
     const { id } = req.params;
     const con = await client.connect();
     const usersCollection = con.db(dbName).collection('Users');
-    const userResult = await usersCollection.deleteOne({ _id: new ObjectId(id) });
+    const userResult = await usersCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     await con.close();
     if (userResult.deletedCount === 0) {
       return res.status(404).json({ message: 'User not found' });
@@ -186,13 +188,17 @@ app.delete('/question/:id', async (req, res) => {
     const con = await client.connect();
     const questionCollection = con.db(dbName).collection('Questions');
     const answerCollection = con.db(dbName).collection('Answers');
-    const questionResult = await questionCollection.deleteOne({ _id: new ObjectId(id) });
+    const questionResult = await questionCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     await answerCollection.deleteMany({ questionId: new ObjectId(id) });
     await con.close();
     if (questionResult.deletedCount === 0) {
       return res.status(404).json({ message: 'Question not found' });
     }
-    return res.json({ message: 'Question and associated answers deleted successfully' });
+    return res.json({
+      message: 'Question and associated answers deleted successfully',
+    });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -261,7 +267,7 @@ app.put('/answer/:answerId', async (req, res) => {
     if (result.modifiedCount === 0) {
       return res.status(404).json({ message: 'answer not found' });
     }
-    return res.json({ message: 'answer updated successfully' }); // Add a return statement here
+    return res.json({ message: 'answer updated successfully' });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -278,7 +284,7 @@ app.delete('/answer/:answerId', async (req, res) => {
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'answer not found' });
     }
-    return res.json({ message: 'answer deleted successfully' }); // Add a return statement here
+    return res.json({ message: 'answer deleted successfully' });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -300,7 +306,7 @@ app.get('/answer/:answerId', async (req, res) => {
       return res.status(404).send('answer not found');
     }
     const answerWithLastEdited = { ...answer, lastEdited };
-    return res.send(answerWithLastEdited); // Add a return statement here
+    return res.send(answerWithLastEdited);
   } catch (error) {
     return res.status(500).send(error);
   }

@@ -1,9 +1,10 @@
 import { Link, generatePath } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getQuestions } from "../../api/questions";
+import { POST_QUESTION_ROUTE, QUESTION_ROUTE } from "../../routes/const";
 import QuestionCard from "./QuestionCard";
 import Button from "../../components/Button/Button";
-import { POST_QUESTION_ROUTE, QUESTION_ROUTE } from "../../routes/const";
+import Loading from "../../components/Loading/Loading";
 import "./Home.css";
 
 const Home = () => {
@@ -30,7 +31,7 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (questions.length === 0) {
@@ -41,7 +42,7 @@ const Home = () => {
             <Button>Post a question</Button>
           </Link>
         </div>
-        <div>There are no questions yet.</div>
+        <div>Curiosity is the spark that ignites knowledge, and right now, it seems like the world is eagerly waiting for your questions to illuminate the path ahead.</div>
       </div>
     );
   }
@@ -55,7 +56,7 @@ const Home = () => {
       </div>
       <div>
         <div className="sortContainer">
-          Sort by: 
+          Sort by:
           <select value={sortOrder} onChange={handleSortChange}>
             <option value="desc">Newest First</option>
             <option value="asc">Oldest First</option>
@@ -75,4 +76,3 @@ const Home = () => {
 };
 
 export default Home;
-

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../routes/const";
@@ -39,11 +40,11 @@ const UserProvider = ({ children }) => {
             navigate(LOGIN_ROUTE);
           })
           .catch((error) => {
-            setError(error.message); // Display the error message from the backend
+            setError(error.message);
           });
       })
       .catch((error) => {
-        setError(error.message); // Display the error message
+        setError(error.message);
       });
   };
 
@@ -59,33 +60,33 @@ const UserProvider = ({ children }) => {
         }
       })
       .catch((error) => {
-        setError(error.message); // Display the error message
+        setError(error.message);
       });
   };
 
   const onLogout = () => {
     setUser(null);
     localStorage.setItem("user", null);
-    navigate(LOGIN_ROUTE)
-  }
-  
+    navigate(LOGIN_ROUTE);
+  };
+
   const onUpdate = (updatingUser) => {
     updateUser(user._id, updatingUser)
       .then((response) => {
         setUser(response);
-        localStorage.setItem("user", JSON.stringify(response)); // Update user information in localStorage
+        localStorage.setItem("user", JSON.stringify(response));
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+
   const onDelete = () => {
     if (window.confirm("Are you sure you want to delete your account?")) {
       deleteUser(user._id)
         .then(() => {
           setUser(null);
-          localStorage.removeItem("user"); // Remove user information from localStorage
+          localStorage.removeItem("user");
           navigate(LOGIN_ROUTE);
         })
         .catch((error) => {
@@ -96,11 +97,25 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, loggedIn, onRegister, onLogin, onLogout,onUpdate, onDelete, error }}
+      value={{
+        user,
+        loggedIn,
+        onRegister,
+        onLogin,
+        onLogout,
+        onUpdate,
+        onDelete,
+        error,
+      }}
     >
       {children}
     </UserContext.Provider>
   );
 };
 
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 export { UserContext, UserProvider };
+

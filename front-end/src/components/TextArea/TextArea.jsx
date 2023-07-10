@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const TextArea = ({ label, ...props }) => {
   return (
     <div>
@@ -7,6 +9,14 @@ const TextArea = ({ label, ...props }) => {
       <textarea {...props}></textarea>
     </div>
   );
+};
+
+TextArea.propTypes = {
+  label: PropTypes.string.isRequired,
+};
+
+TextArea.defaultTypes = {
+  label: "",
 };
 
 export default TextArea;

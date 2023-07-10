@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Navigation from "../../components/Navigation/Navigation";
 
 const ClientLayout = ({ children }) => {
@@ -7,6 +8,10 @@ const ClientLayout = ({ children }) => {
       <div>{children}</div>
     </div>
   );
+};
+
+ClientLayout.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default ClientLayout;

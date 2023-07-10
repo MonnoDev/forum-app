@@ -1,8 +1,9 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import AnswersAction from "./AnswersAction";
-import EditAnswer from "./EditAnswer";
 import { SlDislike, SlLike } from "react-icons/sl";
 import { formatDate } from "../../utils/date";
+import AnswersAction from "./AnswersAction";
+import EditAnswer from "./EditAnswer";
 import "./Answer.css";
 
 const AnswerCard = ({ answer }) => {
@@ -13,7 +14,6 @@ const AnswerCard = ({ answer }) => {
   const [isDisliked, setIsDisliked] = useState(false);
 
   useEffect(() => {
-    // Retrieve like/dislike data from local storage on component mount
     const storedLikeCount = localStorage.getItem(`like_${answer._id}`);
     const storedDislikeCount = localStorage.getItem(`dislike_${answer._id}`);
     const storedIsLiked = localStorage.getItem(`isLiked_${answer._id}`);
@@ -26,7 +26,6 @@ const AnswerCard = ({ answer }) => {
   }, [answer._id]);
 
   useEffect(() => {
-    // Save like/dislike data to local storage on state change
     localStorage.setItem(`like_${answer._id}`, likeCount.toString());
     localStorage.setItem(`dislike_${answer._id}`, dislikeCount.toString());
     localStorage.setItem(`isLiked_${answer._id}`, isLiked.toString());
@@ -35,16 +34,13 @@ const AnswerCard = ({ answer }) => {
 
   const handleLike = () => {
     if (isLiked) {
-      // User unliked the answer
       setLikeCount(likeCount - 1);
       setIsLiked(false);
     } else {
-      // User liked the answer
       setLikeCount(likeCount + 1);
       setIsLiked(true);
 
       if (isDisliked) {
-        // User un-disliked the answer if it was previously disliked
         setDislikeCount(dislikeCount - 1);
         setIsDisliked(false);
       }
@@ -53,24 +49,22 @@ const AnswerCard = ({ answer }) => {
 
   const handleDislike = () => {
     if (isDisliked) {
-      // User un-disliked the answer
       setDislikeCount(dislikeCount - 1);
       setIsDisliked(false);
     } else {
-      // User disliked the answer
       setDislikeCount(dislikeCount + 1);
       setIsDisliked(true);
 
       if (isLiked) {
-        // User unliked the answer if it was previously liked
         setLikeCount(likeCount - 1);
         setIsLiked(false);
       }
     }
   };
 
-
-  const formattedLastEdited = answer.lastEdited ? formatDate(answer.lastEdited) : null;
+  const formattedLastEdited = answer.lastEdited
+    ? formatDate(answer.lastEdited)
+    : null;
 
   return (
     <div className="answerPostContainer">
@@ -86,29 +80,23 @@ const AnswerCard = ({ answer }) => {
       <div className="answerPost">
         Answer: {answer.answer}
         <div className="edited">
-          {formattedLastEdited && (
-            <span>Edited on {formattedLastEdited}</span>
-          )}
+          {formattedLastEdited && <span>Edited on {formattedLastEdited}</span>}
         </div>
         <div className="answerButtonContainer">
-                  {!isEditing && (
-          <AnswersAction
-            answer={answer}
-
-          />
-        )}
-        {isEditing && (
-          <EditAnswer
-            answer={answer}
-
-          />
-        )}
+          {!isEditing && <AnswersAction answer={answer} />}
+          {isEditing && <EditAnswer answer={answer} />}
         </div>
-
       </div>
     </div>
   );
 };
 
-export default AnswerCard;
+AnswerCard.propTypes = {
+  answer: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired,
+    lastEdited: PropTypes.string,
+  }).isRequired,
+};
 
+export default AnswerCard;

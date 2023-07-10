@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import Button from "../../components/Button/Button";
@@ -35,7 +36,8 @@ const Register = () => {
         label="Password"
         type="password"
         value={password}
-        minLength={6} maxLength={20}
+        minLength={6}
+        maxLength={20}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
@@ -47,4 +49,10 @@ const Register = () => {
   );
 };
 
+Register.propTypes = {
+  onRegister: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
 export default Register;
+

@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import { useNavigate, generatePath } from "react-router-dom";
-import Button from "../../components/Button/Button";
-import { EDIT_ANSWER_ROUTE} from "../../routes/const";
+import { EDIT_ANSWER_ROUTE } from "../../routes/const";
 import { deleteAnswer } from "../../api/answers";
+import Button from "../../components/Button/Button";
 
-const AnswersAction = ({ answer, onEdit }) => {
+const AnswersAction = ({ answer }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -17,7 +18,7 @@ const AnswersAction = ({ answer, onEdit }) => {
   const handleDelete = () => {
     deleteAnswer(answer._id)
       .then(() => {
-        window.location.reload(); // Reload the page after deleting the answer
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -26,10 +27,17 @@ const AnswersAction = ({ answer, onEdit }) => {
 
   return (
     <div>
-      <Button onClick={handleEdit}>Edit Answer</Button>
-      <Button onClick={handleDelete}>Delete Answer</Button>
+      <Button onClick={handleEdit}>Edit answer</Button>
+      <Button onClick={handleDelete}>Delete answer</Button>
     </div>
   );
 };
 
+AnswersAction.propTypes = {
+  answer: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
 export default AnswersAction;
+

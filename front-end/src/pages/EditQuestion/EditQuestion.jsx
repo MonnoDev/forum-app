@@ -1,7 +1,8 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Loading from "../../components/Loading/Loading";
 import { getQuestion } from "../../api/questions";
+import Loading from "../../components/Loading/Loading";
 import PostQuestion from "../PostQuestion/PostQuestion";
 
 const EditQuestion = () => {
@@ -32,6 +33,10 @@ const EditQuestion = () => {
   }
 
   return <PostQuestion question={question} />;
+};
+
+EditQuestion.propTypes = {
+  id: PropTypes.string.isRequired,
 };
 
 export default EditQuestion;

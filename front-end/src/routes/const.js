@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import ClientLayout from "../layouts/ClientLayout/ClientLayout";
 import SigninLayout from "../layouts/SigninLayout/LoginLayout";
 import EditQuestion from "../pages/EditQuestion/EditQuestion";
@@ -6,7 +7,7 @@ import Login from "../pages/Login/Login";
 import PostQuestion from "../pages/PostQuestion/PostQuestion";
 import Register from "../pages/Register/Register";
 import Question from "../pages/Question/Question";
-import EditAnswer from "../pages/PostAnswer/EditAnswer";
+import EditAnswer from "../pages/Answer/EditAnswer";
 import Profile from "../pages/Profile/Profile";
 
 export const LOGIN_ROUTE = "/";
@@ -60,4 +61,22 @@ export const clientRoutes = {
       Component: EditAnswer,
     },
   ],
+};
+
+signinRoutes.Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+signinRoutes.routes.propTypes = {
+  path: PropTypes.string.isRequired,
+  Component: PropTypes.elementType.isRequired,
+};
+
+clientRoutes.Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+clientRoutes.routes.propTypes = {
+  path: PropTypes.string.isRequired,
+  Component: PropTypes.elementType.isRequired,
 };

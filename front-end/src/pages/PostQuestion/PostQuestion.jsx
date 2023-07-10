@@ -1,10 +1,11 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate, generatePath, Link } from "react-router-dom";
+import { createQuestion, updateQuestion } from "../../api/questions";
+import { QUESTION_ROUTE, HOME_ROUTE } from "../../routes/const";
 import FormField from "../../components/FormField/FormField";
 import Button from "../../components/Button/Button";
 import TextArea from "../../components/TextArea/TextArea";
-import { createQuestion, updateQuestion } from "../../api/questions";
-import { QUESTION_ROUTE, HOME_ROUTE } from "../../routes/const";
 import "../../style/FormStyle.css";
 
 const PostQuestion = ({ question }) => {
@@ -75,6 +76,14 @@ const PostQuestion = ({ question }) => {
       </div>
     </div>
   );
+};
+
+PostQuestion.propTypes = {
+  question: PropTypes.shape({
+    title: PropTypes.string,
+    question: PropTypes.string,
+    _id: PropTypes.string,
+  }),
 };
 
 export default PostQuestion;

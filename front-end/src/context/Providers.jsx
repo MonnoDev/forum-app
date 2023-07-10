@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { UserProvider } from "./UserContext";
 
 const Providers = ({ children }) => {
@@ -6,6 +7,10 @@ const Providers = ({ children }) => {
       <UserProvider>{children}</UserProvider>
     </div>
   );
+};
+
+Providers.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Providers;
